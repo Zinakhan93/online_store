@@ -7,6 +7,8 @@ import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.searchEngine.SearchEngine;
 
+import java.util.Arrays;
+
 public class App {
     public static void main(String[] args) {
         System.out.println("App.main");
@@ -59,7 +61,7 @@ public class App {
 
         // Создание поискового движка и добавление товаров и статей.
         System.out.println("Дз -3");
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine(20);
         searchEngine.add(apple);
         searchEngine.add(juice);
         searchEngine.add(banana);
@@ -67,47 +69,26 @@ public class App {
 
 
         // Создание статей и добавление их в поисковый движок.
-        Article article1 = new Article("Польза яблок", "Яблоки полезны для здоровья.");
-        Article article2 = new Article("Сок ", "Сок из натуральных фруктов полезен для здоровья");
-        Article article3 = new Article("Бананы", "Бананы содержат много калия.");
-        Article article4 = new Article("Шоколад", "Полезно для мозга");
+        Article article1 = new Article("Яблоко", " Полезны для здоровья.");
+        Article article2 = new Article("Сок ", "из натуральных фруктов полезен для здоровья");
+        Article article4 = new Article("Шоколад", "Полезно ");
+        Article article5 = new Article("Апельсин", "Витамин С");
 
         searchEngine.add(article1);
         searchEngine.add(article2);
-        searchEngine.add(article3);
         searchEngine.add(article4);
+        searchEngine.add(article5);
+        System.out.println("Проверка");
 
-        // Поиск по товарам и статьям.
-        System.out.println("Результаты поиска 'яблоко':");
-        for (Searchable result : searchEngine.search("яблоко")) {
-            System.out.println(result.getStringRepresentation());
-        }
-        System.out.println("\nРезультаты поиска 'сок':");
-        for (Searchable result : searchEngine.search("сок")) {
-            System.out.println(result.getStringRepresentation());
-        }
+        System.out.println("Поиск по слову 'Сок':");
+        System.out.println(Arrays.toString(searchEngine.search("Сок")));
+        System.out.println("Поиск по слову 'Витамин':");
+        System.out.println(Arrays.toString(searchEngine.search("Витамин")));
 
+        System.out.println("Второй метод поиска");
 
-        System.out.println("\nРезультаты поиска 'банан':");
-        for (Searchable result : searchEngine.search("банан")) {
-            System.out.println(result.getStringRepresentation());
-        }
-        System.out.println("\nРезультаты поиска 'шоколад':");
-        for (Searchable result : searchEngine.search("шоколад")) {
-            System.out.println(result.getStringRepresentation());
-        }
-
-
-
-
-
-
-
-
-
-
-
-
+        System.out.println("Поиск по слову 'Апельсин':");
+        searchEngine.printSearchResults(searchEngine.search("Апельсин"));
 
 
 

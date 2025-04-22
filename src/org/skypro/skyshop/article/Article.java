@@ -20,7 +20,7 @@ public class Article implements Searchable {
     }
 
     public String toString() {
-        return title + "\n"  + text;
+        return title + " "  + text;
     }
 // Наследуемые методы
     @Override

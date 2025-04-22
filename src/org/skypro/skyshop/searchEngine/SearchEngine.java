@@ -1,38 +1,55 @@
 package org.skypro.skyshop.searchEngine;
 import org.skypro.skyshop.Searchable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SearchEngine {
-    private  Searchable[] search;
-    private int count;
+    private final Searchable[] items ;
+    private int count =0;
 
     public SearchEngine(int size) {
-        search = new Searchable[size];
-        count=0;
+        items = new Searchable[size];
+
     }
 
     public void add(Searchable a) {
-        if (count < search.length) {
-            search[count] = a;
+        if (count <items .length) {
+            items[count] = a;
             count++;
         } else {
-            System.out.println( "Невозможно добавить элемент, массив полон.");
+            System.out.println("Невозможно добавить элемент, массив полон.");
         }
     }
-    public Searchable[] search(String term) {
-        List<Searchable> results = new ArrayList<>();
+    // Метод для поиска элементов по строке
+    public Searchable[] search (String word){
+        Searchable[] results = new Searchable[5]; // Массив для хранения результатов поиска
+        int foundCount = 0; // Счетчик найденных элементов
 
-        for (Searchable a : search) {
-            if (a != null && a.getSearchTerm().toLowerCase().contains(term.toLowerCase())) {
-                results.add(a);
-                if (results.size() == 5) { // Ограничиваем до 5 результатов.
+        for (int i = 0; i < items.length; i++) { // Проход по всем элементам массива
+            if (items[i] != null && items[i].getSearchTerm().contains(word)){ // Проверка на соответствие строки поиска
+                results[foundCount] = items[i]; // Добавление найденного элемента в результаты
+                foundCount++; // Увеличение счетчика найденных элементов
+
+                if (foundCount == results.length) { // Проверка на заполнение массива результатов
                     break;
+
                 }
             }
         }
-        return results.toArray(new Searchable[0]);
+
+        return results; // Возврат массива результатов поиска
     }
+
+    // Пока неуверена в его использовании
+    public void printSearchResults(Searchable[] results) {
+        for (Searchable item : results) {
+            if (item != null) {
+                System.out.println(item.getStringRepresentation());
+            } else {
+                System.out.println("Ничего не найдено");
+            }
+        }
+    }
+
+
 
 
 
