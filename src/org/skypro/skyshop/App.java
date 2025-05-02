@@ -12,17 +12,17 @@ import java.util.Arrays;
 public class App {
     public static void main(String[] args) {
         System.out.println("App.main");
-        ProductBasket basket= new ProductBasket();
-        ProductBasket basket2= new ProductBasket();
-        ProductBasket basket3= new ProductBasket();
-        ProductBasket basket4= new ProductBasket();
+        ProductBasket basket = new ProductBasket();
+        ProductBasket basket2 = new ProductBasket();
+        ProductBasket basket3 = new ProductBasket();
+        ProductBasket basket4 = new ProductBasket();
 
         // Добавляем продуктов в корзину
         Product apple = new SimpleProduct("Яблоко", 200);
-        Product mango = new DiscountedProduct("Манго", 300,25);
+        Product mango = new DiscountedProduct("Манго", 300, 25);
         Product cheese = new FixPriceProduct("Сыр");
         Product chocolate = new FixPriceProduct("Шоколад");
-        Product juice = new DiscountedProduct("Сок",120,10);
+        Product juice = new DiscountedProduct("Сок", 120, 10);
         Product orange = new SimpleProduct("Апельсин", 200);
         DiscountedProduct banana = new DiscountedProduct("Банан", 80, 20);
 
@@ -67,7 +67,6 @@ public class App {
         searchEngine.add(banana);
         searchEngine.add(chocolate);
 
-
         // Создание статей и добавление их в поисковый движок.
         Article article1 = new Article("Яблоко", " Полезны для здоровья.");
         Article article2 = new Article("Сок ", "из натуральных фруктов полезен для здоровья");
@@ -89,12 +88,32 @@ public class App {
 
         System.out.println("Поиск по слову 'Апельсин':");
         searchEngine.printSearchResults(searchEngine.search("Апельсин"));
+        System.out.println("Дз 4");
 
-
-
-
-
-
+        try {
+            Product potato = new SimpleProduct("картошка", -10);
+        } catch (IllegalArgumentException a) {
+            System.out.println(a.getMessage());
+        }
+        try {
+            Product carrot = new DiscountedProduct(" ", 50, 95);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("\nПоиск самого подходящего элемента:");
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании поискового запроса: " + e.getMessage());
+        } catch (BestResultNotFound e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("Яблоки");
+            System.out.println("Найден лучший результат: " + bestMatch.getSearchTerm());
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
 
 
 
@@ -103,4 +122,3 @@ public class App {
 
     }
 }
-
