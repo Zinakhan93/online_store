@@ -5,9 +5,9 @@ public interface Searchable {
 
     String getContentType();
 
-    String getName();
+    String getSearchableName();
 
     default String getStringRepresentation() {
-        return getName() + " — тип " + getContentType();
+        return getSearchableName() + " — " + getContentType();
     }
 }
