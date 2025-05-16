@@ -8,16 +8,14 @@ import org.skypro.skyshop.product.SimpleProduct;
 import org.skypro.skyshop.searchEngine.SearchEngine;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         System.out.println("App.main");
-        ProductBasket basket = new ProductBasket();
-        ProductBasket basket2 = new ProductBasket();
-        ProductBasket basket3 = new ProductBasket();
         ProductBasket basket4 = new ProductBasket();
 
-        // Добавляем продуктов в корзину
+        // Перечисляем продукты которые есть по спец.ценам
         Product apple = new SimpleProduct("Яблоко", 200);
         Product mango = new DiscountedProduct("Манго", 300, 25);
         Product cheese = new FixPriceProduct("Сыр");
@@ -25,7 +23,6 @@ public class App {
         Product juice = new DiscountedProduct("Сок", 120, 10);
         Product orange = new SimpleProduct("Апельсин", 200);
         DiscountedProduct banana = new DiscountedProduct("Банан", 80, 20);
-
 
         // Добавляем во вторую корзину товары ДЗ -2
         basket4.addFood(apple);
@@ -36,7 +33,7 @@ public class App {
         basket4.addFood(orange);
 
         System.out.println("Содержимое корзины № 4");
-        basket4.printContents();
+        basket4.printBasket();
 
         // Получение стоимости корзины c несколькими товарами
         System.out.println("Общая стоимость корзины 4: " + basket4.getTotalPrice());
@@ -46,26 +43,45 @@ public class App {
 
         // Поиск товара, которого нет в корзине
         System.out.println("Есть ли виноград в корзине 4? " + basket4.containsProduct("Виноград"));
+        System.out.println("\nСодержимое корзины до удаления:");
+        basket4.printBasket();
 
-        // Очистка корзины
-        basket4.clearBasket();
+        System.out.println("\nУдаляем продукт 'Яблоко':");
+        List<Product> removedProducts = basket4.removeProductsByName("Яблоко");
+        if (!removedProducts.isEmpty()) {
+            System.out.println("Удаленные продукты:");
+            for (Product product : removedProducts) {
+                System.out.println(product);
+            }
+        }
+        System.out.println("\nСодержимое корзины после удаления:");
+        basket4.printBasket();
+        System.out.println("\nПытаемся удалить продукт 'Манго':");
+        removedProducts = basket4.removeProductsByName("Манго");
+        if (removedProducts.isEmpty()) {
+            System.out.println("Список удаленных продуктов пуст");
+        }
+        System.out.println("\nСодержимое корзины после попытки удаления:");
+        basket4.printBasket();
 
-        // Печать содержимого пустой корзины
-        basket4.printContents();
+        basket4.cleaningTheBasket();
+        System.out.println("\nСодержимое корзины 4 после очистки:");
 
-        // Получение стоимости пустой корзины
-        System.out.println("Общая стоимость пустой корзины: " + basket4.getTotalPrice());
+        basket4.printBasket();
+        System.out.println("\nОбщая стоимость корзины 4 после очистки: " + basket4.getTotalPrice());
+        System.out.println("\nВ корзине после очистки 4 есть Яблоко: " + basket4.containsProduct("Яблоко"));
 
-        // Поиск товара по имени в пустой корзине
-        System.out.println("Содержит ли пустая корзина яблоко? " + basket4.containsProduct("Яблоко"));
+
+
+
 
         // Создание поискового движка и добавление товаров и статей.
         System.out.println("Дз -3");
-        SearchEngine searchEngine = new SearchEngine(20);
-        searchEngine.add(apple);
-        searchEngine.add(juice);
-        searchEngine.add(banana);
-        searchEngine.add(chocolate);
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.addSearchable(apple);
+        searchEngine.addSearchable(juice);
+        searchEngine.addSearchable(banana);
+        searchEngine.addSearchable(chocolate);
 
         // Создание статей и добавление их в поисковый движок.
         Article article1 = new Article("Яблоко", " Полезны для здоровья.");
@@ -73,23 +89,24 @@ public class App {
         Article article4 = new Article("Шоколад", "Полезно ");
         Article article5 = new Article("Апельсин", "Витамин С");
 
-        searchEngine.add(article1);
-        searchEngine.add(article2);
-        searchEngine.add(article4);
-        searchEngine.add(article5);
+        searchEngine.addSearchable(article1);
+        searchEngine.addSearchable(article2);
+        searchEngine.addSearchable(article4);
+        searchEngine.addSearchable(article5);
+        //Можно добавить еще и так
+        searchEngine.addSearchable(new Article("Апельсин", "Витамин С"));;
+
         System.out.println("Проверка");
 
-        System.out.println("Поиск по слову 'Сок':");
-        System.out.println(Arrays.toString(searchEngine.search("Сок")));
-        System.out.println("Поиск по слову 'Витамин':");
-        System.out.println(Arrays.toString(searchEngine.search("Витамин")));
+        System.out.println("Результат по поиска по 'Сок':");
+        searchEngine.printSearchResults(searchEngine.search("сок"));
+        System.out.println("Результат по поиска по 'Витамин':");
+        searchEngine.printSearchResults(searchEngine.search("Витамин"));
 
-        System.out.println("Второй метод поиска");
-
-        System.out.println("Поиск по слову 'Апельсин':");
+        System.out.println("Результат по поиска по 'Апельсин':");
         searchEngine.printSearchResults(searchEngine.search("Апельсин"));
-        System.out.println("Дз 4");
 
+        // Исключения
         try {
             Product potato = new SimpleProduct("картошка", -10);
         } catch (IllegalArgumentException a) {
@@ -100,6 +117,24 @@ public class App {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+        try {
+            Product zeroPriceProduct = new SimpleProduct("Телефон", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+        }
+        try {
+            Product cake = new DiscountedProduct("Торт", 3000, 20);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании продукта: " + e.getMessage());
+        } finally {
+            System.out.println("Проверка завершена");
+        }
+        System.out.println("\nПроверка при добавлении новых статей");
+        try {
+            Article emptyTitleArticle = new Article(" ", "Пустое название");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании статьи: " + e.getMessage());
+        }
         System.out.println("\nПоиск самого подходящего элемента:");
         try {
             Searchable bestMatch = searchEngine.findBestMatch("");
@@ -109,11 +144,23 @@ public class App {
             throw new RuntimeException(e);
         }
         try {
-            Searchable bestMatch = searchEngine.findBestMatch("Яблоки");
+            Searchable bestMatch = searchEngine.findBestMatch("Яблоко");
             System.out.println("Найден лучший результат: " + bestMatch.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
         }
+        try {
+            Searchable bestMatch = searchEngine.findBestMatch("Сок");
+            System.out.println("Найден лучший результат: " + bestMatch.getSearchTerm());
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+
+
+
 
 
 
