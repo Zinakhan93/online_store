@@ -72,8 +72,7 @@ public class SearchEngine {
             }
             count++;
             index += substringLength;
-        }
-        return count;
+        }return count;
     }
 }
 
