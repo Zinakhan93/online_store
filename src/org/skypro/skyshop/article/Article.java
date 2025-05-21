@@ -2,12 +2,18 @@ package org.skypro.skyshop.article;
 
 import org.skypro.skyshop.Searchable;
 
-public class Article implements Searchable {
+public final class Article implements Searchable {
     private String title;
     private String text;
 
     public Article(String title, String text) {
+        if (title==null || title.isBlank()){
+            throw new IllegalArgumentException("Название статьи не может быть пустым или null");
+        }
         this.title = title;
+        if (text==null|| text.isBlank()){
+            throw new IllegalArgumentException("Текст статьи не может быть пустым или null");
+        }
         this.text = text;
     }
 
@@ -15,26 +21,23 @@ public class Article implements Searchable {
         return title;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public String toString() {
-        return title + " "  + text;
-    }
-// Наследуемые методы
     @Override
     public String getSearchTerm() {
-        return title + " " + text; // Возвращаем название и текст статьи для поиска;
+        return toString();
     }
+    @Override
+    public String getSearchableName() {
+        return title;
+    }
+
 
     @Override
     public String getContentType() {
         return "ARTICLE";
     }
-
     @Override
-    public String getName() {
-        return title;// Имя - это название статьи.
+    public String toString() {
+        return title  + text;
     }
+
 }
