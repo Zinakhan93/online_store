@@ -15,7 +15,10 @@ public class App {
         System.out.println("App.main");
         ProductBasket basket4 = new ProductBasket();
 
+ hw-6
+
         // Перечисляем продукты которые есть по спец.ценам
+ master
         Product apple = new SimpleProduct("Яблоко", 200);
         Product mango = new DiscountedProduct("Манго", 300, 25);
         Product cheese = new FixPriceProduct("Сыр");
@@ -23,6 +26,14 @@ public class App {
         Product juice = new DiscountedProduct("Сок", 120, 10);
         Product orange = new SimpleProduct("Апельсин", 200);
         DiscountedProduct banana = new DiscountedProduct("Банан", 80, 20);
+ hw-6
+
+        basket4.addProduct(apple);
+        basket4.addProduct(banana);
+        basket4.addProduct(chocolate);
+        basket4.addProduct(cheese);
+        basket4.addProduct(juice);
+        basket4.addProduct(orange);
 
         // Добавляем во вторую корзину товары ДЗ -2
         basket4.addFood(apple);
@@ -31,6 +42,7 @@ public class App {
         basket4.addFood(cheese);
         basket4.addFood(juice);
         basket4.addFood(orange);
+ master
 
         System.out.println("Содержимое корзины № 4");
         basket4.printBasket();
@@ -71,9 +83,24 @@ public class App {
         System.out.println("\nОбщая стоимость корзины 4 после очистки: " + basket4.getTotalPrice());
         System.out.println("\nВ корзине после очистки 4 есть Яблоко: " + basket4.containsProduct("Яблоко"));
 
+ hw-6
+        // Очистка корзины
+        basket4.cleaningTheBasket();
+
+        // Печать содержимого пустой корзины
+        basket4.printBasket();
+
+
+master
 
 
 
+ hw-6
+        SearchEngine searchEngine = new SearchEngine();
+        searchEngine.add(apple);
+        searchEngine.add(juice);
+        searchEngine.add(banana);
+        searchEngine.add(chocolate);
 
         // Создание поискового движка и добавление товаров и статей.
         System.out.println("Дз -3");
@@ -82,6 +109,7 @@ public class App {
         searchEngine.addSearchable(juice);
         searchEngine.addSearchable(banana);
         searchEngine.addSearchable(chocolate);
+ master
 
         // Создание статей и добавление их в поисковый движок.
         Article article1 = new Article("Яблоко", " Полезны для здоровья.");
@@ -96,12 +124,15 @@ public class App {
         //Можно добавить еще и так
         searchEngine.addSearchable(new Article("Апельсин", "Витамин С"));;
 
+hw-6
+
         System.out.println("Проверка");
 
         System.out.println("Результат по поиска по 'Сок':");
         searchEngine.printSearchResults(searchEngine.search("сок"));
         System.out.println("Результат по поиска по 'Витамин':");
         searchEngine.printSearchResults(searchEngine.search("Витамин"));
+ master
 
         System.out.println("Результат по поиска по 'Апельсин':");
         searchEngine.printSearchResults(searchEngine.search("Апельсин"));
@@ -136,7 +167,11 @@ public class App {
             System.out.println("Ошибка при создании статьи: " + e.getMessage());
         }
         System.out.println("\nПоиск самого подходящего элемента:");
+
         try {
+ hw-6
+            Searchable bestMatch = searchEngine.findBestMatch("из");
+
             Searchable bestMatch = searchEngine.findBestMatch("");
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка при создании поискового запроса: " + e.getMessage());
@@ -151,6 +186,7 @@ public class App {
         }
         try {
             Searchable bestMatch = searchEngine.findBestMatch("Сок");
+ master
             System.out.println("Найден лучший результат: " + bestMatch.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());

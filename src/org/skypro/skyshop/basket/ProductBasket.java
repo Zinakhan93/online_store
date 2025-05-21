@@ -2,6 +2,17 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
+ hw-6
+import java.util.*;
+
+
+public class ProductBasket {
+    private Map<String, List<Product>> productsMap= new HashMap<>();
+
+    public void addProduct(Product product) {
+        List<Product> products = productsMap.computeIfAbsent(product.getName(), k -> new ArrayList<>());
+        products.add(product);
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,12 +23,14 @@ public class ProductBasket {
 
     public void addFood(Product product) {
         food.add(product);
+ master
     }
+
 
     public int getTotalPrice() {
         int totalPrice = 0;
-        for (Product product : food) {
-            if (product != null) {
+        for (List<Product> productList : productsMap.values()) {
+            for (Product product : productList) {
                 totalPrice += product.getPrice();
             }
         }
@@ -25,6 +38,32 @@ public class ProductBasket {
     }
     public int countSpecialProducts() {
         int count = 0;
+ hw-6
+        for (List<Product> productList : productsMap.values()) {
+            for (Product product : productList) {
+                if (product.isSpecial()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    public void printBasket() {
+        if (productsMap.isEmpty()) {
+            System.out.println("в корзине пусто");
+            return;
+
+        }
+        for (List<Product> productList : productsMap.values()) {
+            for (Product product : productList) {
+                System.out.println(product);
+            }
+        }
+
+        System.out.println("Итого: " + getTotalPrice());
+        System.out.println("Специальных товаров: " + countSpecialProducts());
+    }
+
         for (Product product : food) {
             if (product != null && product.isSpecial()) {
                 count++;
@@ -48,14 +87,22 @@ public class ProductBasket {
         }
     }
 
+master
     public boolean containsProduct(String name) {
-        for (Product product : food) {
-            if (product != null && product.getName().equalsIgnoreCase(name)) {
-                return true ;
-            }
-        }
-        return false;
+        return productsMap.containsKey(name);
     }
+ hw-6
+    public void cleaningTheBasket() {
+        productsMap.clear();
+    }
+    public List<Product> removeProductsByName(String name) {
+        List<Product> removedProducts = productsMap.remove(name);
+        return removedProducts != null ? removedProducts : Collections.emptyList();
+    }
+
+
+
+
 
     public void cleaningTheBasket() {
         food.clear();
@@ -74,6 +121,7 @@ public class ProductBasket {
 
         return removedProducts;
     }
+ master
 
 
 
