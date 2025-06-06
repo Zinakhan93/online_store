@@ -17,25 +17,17 @@ public class ProductBasket {
 
 
     public int getTotalPrice() {
-        int totalPrice = 0;
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                totalPrice += product.getPrice();
-            }
-        }
-        return totalPrice;
+        return productsMap.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
-    public int countSpecialProducts() {
-        int count = 0;
+    public long countSpecialProducts() {
+        return productsMap.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
 
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                if (product.isSpecial()) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
     public void printBasket() {
         if (productsMap.isEmpty()) {
@@ -43,11 +35,9 @@ public class ProductBasket {
             return;
 
         }
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                System.out.println(product);
-            }
-        }
+        productsMap.values().stream()
+                .flatMap(List::stream)
+                .forEach(System.out::println);
 
         System.out.println("Итого: " + getTotalPrice());
         System.out.println("Специальных товаров: " + countSpecialProducts());

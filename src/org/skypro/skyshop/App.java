@@ -77,7 +77,7 @@ public class App {
         System.out.println("\nПоиск самого подходящего элемента:");
 
         try {
-            Searchable bestMatch = searchEngine.findBestMatch("из");
+            Searchable bestMatch = searchEngine.findBestMatch("Яблоко");
             System.out.println("Найден лучший результат: " + bestMatch.getSearchTerm());
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
